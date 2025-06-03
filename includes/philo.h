@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mknoll <mknoll@student.42.fr>              +#+  +:+       +#+        */
+/*   By: moritzknoll <moritzknoll@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 12:51:54 by mknoll            #+#    #+#             */
-/*   Updated: 2025/05/25 16:32:34 by mknoll           ###   ########.fr       */
+/*   Updated: 2025/05/26 11:35:41 by moritzknoll      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ struct s_data {
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				must_eat;
-	long			start_time;
+	long long		start_time;
 	int				death;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print;
@@ -51,7 +51,8 @@ int		ft_atoi(const char *str);
 void	init_philo_and_forks(t_data *data);
 long	get_time_in_ms(void);
 void	create_threads(t_philo *philos);
-
 void	*philo_routine(void *arg);
+void	*monitor(void *arg); 
+
 
 #endif

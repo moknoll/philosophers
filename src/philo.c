@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mknoll <mknoll@student.42.fr>              +#+  +:+       +#+        */
+/*   By: moritzknoll <moritzknoll@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 14:00:59 by mknoll            #+#    #+#             */
-/*   Updated: 2025/05/25 16:32:20 by mknoll           ###   ########.fr       */
+/*   Updated: 2025/05/26 11:25:58 by moritzknoll      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	create_threads(t_philo *philos)
 		if (pthread_create(&philos[i].thread,
 				NULL, philo_routine, (void *)&philos[i]))
 		{
-			printf("Failed to create thread for philospher %d\n", philos[i]);
+			// printf("Failed to create thread for philospher %d\n", philos[i]);
 			return ;
 		}
 	}
