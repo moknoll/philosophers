@@ -6,7 +6,7 @@
 /*   By: mknoll <mknoll@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 14:02:32 by mknoll            #+#    #+#             */
-/*   Updated: 2025/05/25 15:38:56 by mknoll           ###   ########.fr       */
+/*   Updated: 2025/06/04 13:12:26 by mknoll           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,33 @@ int	ft_atoi(const char *str)
 	return (res * sign);
 }
 
-long	get_time_in_ms(void)
+long long get_time_in_ms(void)
 {
-	struct timeval	tv;
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    return (tv.tv_sec * 1000LL) + (tv.tv_usec / 1000);
+}
 
-	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec * 1000) + (tv.tv_sec / 1000)); //time in ms
+
+void smart_usleep(t_philo *philo, long time_ms)
+{
+    long start = get_time_in_ms();
+    while ((get_time_in_ms() - start) < time_ms)
+    {
+        if (check_death(philo))
+            break;
+        usleep(1000);  // 1 ms
+    }
+}
+
+int check_death(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->data->death_lock);
+	if (philo->data->death)
+	{
+		pthread_mutex_unlock(&philo->data->death_lock);
+		return (1);
+	}
+	pthread_mutex_unlock(&philo->data->death_lock);
+	return (0);
 }
