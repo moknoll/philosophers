@@ -6,16 +6,28 @@
 /*   By: mknoll <mknoll@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 13:57:30 by mknoll            #+#    #+#             */
-/*   Updated: 2025/06/04 12:47:39 by mknoll           ###   ########.fr       */
+/*   Updated: 2025/06/05 12:48:58 by mknoll           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-// clean up data() --> also destroy mutexes and free everything
-// start threads
-// korrekter aufruf
+void	clean_up(t_data *data)
+{
+	int	i;
 
+	i = 0;
+	while (i < data->num_philos)
+	{
+		pthread_mutex_destroy(&data->forks[i]);
+		i++;
+	}
+	pthread_mutex_destroy(&data->print);
+	pthread_mutex_destroy(&data->death_lock);
+	free(data->forks);
+	free(data->philos);
+	free(data);
+}
 
 t_data	*get_data(char *argv[])
 {
@@ -34,63 +46,62 @@ t_data	*get_data(char *argv[])
 	return (data);
 }
 
-int main(int argc, char *argv[])
+int	check_args(int argc, char *argv[], t_data *data)
 {
-	t_data *data;
-	pthread_t monitor_thread;
-	int i;
-
 	if (argc != 5 && argc != 6)
 	{
-		printf("Usage: %s num_philos time_to_die time_to_eat time_to_sleep [must_eat]\n", argv[0]);
-		return (1);
+		printf("Input not correct\n");
+		return (0);
 	}
-
-	data = get_data(argv);
 	if (!data)
-		return (1);
-
+		return (0);
 	if (argc == 6)
 		data->must_eat = ft_atoi(argv[5]);
 	else
 		data->must_eat = -1;
-
-	data->start_time = get_time_in_ms();
-	init_philo_and_forks(data);
-	
-	for (i = 0; i < data->num_philos; i++)
-	{
-		if (pthread_create(&data->philos[i].thread, NULL, philo_routine, &data->philos[i]) != 0)
-		{
-			printf("Error creating philosopher thread %d\n", i + 1);
-			return (1);
-		}
-	}
-	if (pthread_create(&monitor_thread, NULL, monitor, data) != 0)
-	{
-		printf("Error creating monitor thread\n");
-		return (1);
-	}
-
-	// Auf Philosophen-Threads warten
-	for (i = 0; i < data->num_philos; i++)
-		pthread_join(data->philos[i].thread, NULL);
-
-	// Auf Monitor-Thread warten
-	pthread_join(monitor_thread, NULL);
-
-	// Ressourcen freigeben
-	for (i = 0; i < data->num_philos; i++)
-		pthread_mutex_destroy(&data->forks[i]);
-
-	pthread_mutex_destroy(&data->print);
-	pthread_mutex_destroy(&data->death_lock);
-
-	// Speicher freigeben (falls du malloc verwendet hast)
-	free(data->forks);
-	free(data->philos);
-	free(data);
-
-	return (0);
+	return (1);
 }
 
+int	start_threads(pthread_t *monitor_thread, t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->num_philos)
+	{
+		if (pthread_create(&data->philos[i].thread,
+				NULL, philo_routine, &data->philos[i]) != 0)
+		{
+			printf("Error creating philosopher thread %d\n", i + 1);
+			return (0);
+		}
+		i++;
+	}
+	if (pthread_create(monitor_thread, NULL, monitor, data) != 0)
+	{
+		printf("Error creating monitor thread\n");
+		return (0);
+	}
+	return (1);
+}
+
+int	main(int argc, char *argv[])
+{
+	t_data		*data;
+	pthread_t	monitor_thread;
+	int			i;
+
+	i = 0;
+	data = get_data(argv);
+	if (!check_args(argc, argv, data))
+		return (free(data), 0);
+	data->start_time = get_time_in_ms();
+	init_philo_and_forks(data);
+	if (!start_threads(&monitor_thread, data))
+		return (clean_up(data), 0);
+	while (i < data->num_philos)
+		pthread_join(data->philos[i].thread, NULL);
+	pthread_join(monitor_thread, NULL);
+	clean_up(data);
+	return (0);
+}
