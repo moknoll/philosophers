@@ -6,7 +6,7 @@
 /*   By: mknoll <mknoll@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 13:57:30 by mknoll            #+#    #+#             */
-/*   Updated: 2025/06/05 12:48:58 by mknoll           ###   ########.fr       */
+/*   Updated: 2025/06/05 14:31:43 by mknoll           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	clean_up(t_data *data)
 	}
 	pthread_mutex_destroy(&data->print);
 	pthread_mutex_destroy(&data->death_lock);
+	pthread_mutex_destroy(&data->meal_lock);
 	free(data->forks);
 	free(data->philos);
 	free(data);
@@ -43,6 +44,7 @@ t_data	*get_data(char *argv[])
 	data->time_to_die = ft_atoi(argv[2]);
 	data->time_to_eat = ft_atoi(argv[3]);
 	data->time_to_sleep = ft_atoi(argv[4]);
+	data->death = 0;
 	return (data);
 }
 
@@ -98,7 +100,7 @@ int	main(int argc, char *argv[])
 	data->start_time = get_time_in_ms();
 	init_philo_and_forks(data);
 	if (!start_threads(&monitor_thread, data))
-		return (clean_up(data), 0);
+		return (0);
 	while (i < data->num_philos)
 		pthread_join(data->philos[i].thread, NULL);
 	pthread_join(monitor_thread, NULL);

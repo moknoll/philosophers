@@ -6,7 +6,7 @@
 /*   By: mknoll <mknoll@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 14:01:04 by mknoll            #+#    #+#             */
-/*   Updated: 2025/06/05 14:05:27 by mknoll           ###   ########.fr       */
+/*   Updated: 2025/06/05 14:29:46 by mknoll           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ void	*philo_routine(void *arg)
 		usleep(1000);
 	while (get_time_in_ms() < philo->data->start_time)
 		usleep(100);
-	pthread_mutex_lock(&philo->data->death_lock);
+	pthread_mutex_lock(&philo->data->meal_lock);
 	philo->last_meal = get_time_in_ms();
-	pthread_mutex_unlock(&philo->data->death_lock);
+	pthread_mutex_unlock(&philo->data->meal_lock);
 	while (1)
 	{
 		if (check_death(philo))

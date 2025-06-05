@@ -6,7 +6,7 @@
 /*   By: mknoll <mknoll@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 12:51:54 by mknoll            #+#    #+#             */
-/*   Updated: 2025/06/05 14:06:16 by mknoll           ###   ########.fr       */
+/*   Updated: 2025/06/05 14:10:31 by mknoll           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,6 @@ long long	timestamp(t_data *data);
 int			pick_up_fork_uneven(t_philo *philo);
 void		put_down_forks(t_philo *philo);
 int			pick_up_fork_even(t_philo *philo);
+void		clean_up(t_data *data);
 
 #endif
