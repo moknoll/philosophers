@@ -6,7 +6,7 @@
 /*   By: mknoll <mknoll@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 12:51:54 by mknoll            #+#    #+#             */
-/*   Updated: 2025/06/05 14:10:31 by mknoll           ###   ########.fr       */
+/*   Updated: 2025/06/24 14:40:40 by mknoll           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@
 typedef struct s_data	t_data;
 typedef struct s_philo	t_philo;
 
-struct	s_philo{
+struct	s_philo
+{
 	int				id;
 	unsigned int	meals;
 	long long		last_meal;
@@ -33,7 +34,8 @@ struct	s_philo{
 	t_data			*data;
 };
 
-struct	s_data{
+struct	s_data
+{
 	int				num_philos;
 	time_t			time_to_die;
 	time_t			time_to_eat;
@@ -62,5 +64,6 @@ int			pick_up_fork_uneven(t_philo *philo);
 void		put_down_forks(t_philo *philo);
 int			pick_up_fork_even(t_philo *philo);
 void		clean_up(t_data *data);
+int			check_args(int argc, char *argv[]);
 
 #endif

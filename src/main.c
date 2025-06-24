@@ -6,7 +6,7 @@
 /*   By: mknoll <mknoll@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 13:57:30 by mknoll            #+#    #+#             */
-/*   Updated: 2025/06/05 14:31:43 by mknoll           ###   ########.fr       */
+/*   Updated: 2025/06/24 14:38:00 by mknoll           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,22 +48,6 @@ t_data	*get_data(char *argv[])
 	return (data);
 }
 
-int	check_args(int argc, char *argv[], t_data *data)
-{
-	if (argc != 5 && argc != 6)
-	{
-		printf("Input not correct\n");
-		return (0);
-	}
-	if (!data)
-		return (0);
-	if (argc == 6)
-		data->must_eat = ft_atoi(argv[5]);
-	else
-		data->must_eat = -1;
-	return (1);
-}
-
 int	start_threads(pthread_t *monitor_thread, t_data *data)
 {
 	int	i;
@@ -87,22 +71,38 @@ int	start_threads(pthread_t *monitor_thread, t_data *data)
 	return (1);
 }
 
+int	handle_one(t_data *data)
+{
+	printf("%lld %d has taken a fork\n", timestamp(data), 1);
+	usleep(data->time_to_die * 1000);
+	printf("%lld %d died\n", timestamp(data), 1);
+	free(data);
+	return (1);
+}
+
 int	main(int argc, char *argv[])
 {
 	t_data		*data;
 	pthread_t	monitor_thread;
 	int			i;
 
-	i = 0;
+	if (!check_args(argc, argv))
+		return (1);
 	data = get_data(argv);
-	if (!check_args(argc, argv, data))
-		return (free(data), 0);
+	if (!data)
+		return (1);
 	data->start_time = get_time_in_ms();
+	if (data->num_philos == 1)
+		return (handle_one(data));
 	init_philo_and_forks(data);
 	if (!start_threads(&monitor_thread, data))
-		return (0);
+	{
+		clean_up(data);
+		return (1);
+	}
+	i = 0;
 	while (i < data->num_philos)
-		pthread_join(data->philos[i].thread, NULL);
+		pthread_join(data->philos[i++].thread, NULL);
 	pthread_join(monitor_thread, NULL);
 	clean_up(data);
 	return (0);

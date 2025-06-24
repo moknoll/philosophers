@@ -6,7 +6,7 @@
 /*   By: mknoll <mknoll@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 14:00:16 by mknoll            #+#    #+#             */
-/*   Updated: 2025/06/05 12:11:22 by mknoll           ###   ########.fr       */
+/*   Updated: 2025/06/24 14:06:16 by mknoll           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,17 @@ void	init_philo_and_forks(t_data *data)
 		i++;
 	}
 	init_mutexes(philos, data, forks);
+}
+
+void	create_threads(t_philo *philos)
+{
+	int	i;
+
+	i = 0;
+	while (i < philos[0].data->num_philos)
+	{
+		if (pthread_create(&philos[i].thread,
+				NULL, philo_routine, (void *)&philos[i]))
+			return ;
+	}
 }

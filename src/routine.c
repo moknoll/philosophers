@@ -6,12 +6,11 @@
 /*   By: mknoll <mknoll@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 14:01:04 by mknoll            #+#    #+#             */
-/*   Updated: 2025/06/05 14:29:46 by mknoll           ###   ########.fr       */
+/*   Updated: 2025/06/24 14:05:28 by mknoll           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
-
 
 static void	think(t_philo *philo)
 {

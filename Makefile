@@ -4,7 +4,7 @@ CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 RM = rm -f
 
-SRCS = src/main.c src/utils.c src/init.c src/routine.c src/philo.c src/monitor.c src/routine_forks.c
+SRCS = src/main.c src/utils.c src/init.c src/routine.c src/monitor.c src/routine_forks.c src/syntax.c
 
 OBJS = $(SRCS:.c=.o)
 
