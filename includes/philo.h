@@ -6,7 +6,7 @@
 /*   By: mknoll <mknoll@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 12:51:54 by mknoll            #+#    #+#             */
-/*   Updated: 2025/06/24 14:40:40 by mknoll           ###   ########.fr       */
+/*   Updated: 2025/06/25 07:43:10 by mknoll           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <string.h>
 # include <unistd.h>
 # include <pthread.h>
+# include <stdbool.h>
 # include <sys/time.h>
 
 typedef struct s_data	t_data;
@@ -31,6 +32,8 @@ struct	s_philo
 	pthread_t		thread;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
+	bool			has_l_fork;
+	bool			has_r_fork;
 	t_data			*data;
 };
 
