@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moritz <moritz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mknoll <mknoll@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 12:51:54 by mknoll            #+#    #+#             */
-/*   Updated: 2025/08/05 09:51:53 by moritz           ###   ########.fr       */
+/*   Updated: 2025/08/06 11:23:17 by mknoll           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ struct	s_philo
 	pthread_mutex_t	*right_fork;
 	bool			has_l_fork;
 	bool			has_r_fork;
-	pthread_mutex_t	fork_flag_lock;
 	t_data			*data;
 };
 
@@ -69,6 +68,5 @@ void		put_down_forks(t_philo *philo);
 int			pick_up_fork_even(t_philo *philo);
 void		clean_up(t_data *data);
 int			check_args(int argc, char *argv[]);
-int			check_all_meals_complete(t_data *data);
 
 #endif

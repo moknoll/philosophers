@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moritz <moritz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mknoll <mknoll@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 11:35:18 by moritzknoll       #+#    #+#             */
-/*   Updated: 2025/08/05 09:51:52 by moritz           ###   ########.fr       */
+/*   Updated: 2025/08/06 11:23:34 by mknoll           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,11 @@ void	*monitor(void *arg)
 			now = get_time_in_ms();
 			time_since_meal = now - data->philos[i].last_meal;
 			if (time_since_meal > data->time_to_die && !data->death)
-			{
-				pthread_mutex_unlock(&data->death_lock);
-				print_status(data, data->philos[i].id);
-				return (NULL);
-			}
+				return (pthread_mutex_unlock(&data->death_lock),
+					print_status(data, data->philos[i].id), NULL);
 			pthread_mutex_unlock(&data->death_lock);
 			i++;
 		}
-		if (check_all_meals_complete(data))
-			return (NULL);
 		usleep(500);
 	}
 }
