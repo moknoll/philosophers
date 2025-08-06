@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mknoll <mknoll@student.42.fr>              +#+  +:+       +#+        */
+/*   By: moritz <moritz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 11:35:18 by moritzknoll       #+#    #+#             */
-/*   Updated: 2025/06/05 14:12:29 by mknoll           ###   ########.fr       */
+/*   Updated: 2025/08/05 09:51:52 by moritz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void	*monitor(void *arg)
 			pthread_mutex_unlock(&data->death_lock);
 			i++;
 		}
+		if (check_all_meals_complete(data))
+			return (NULL);
 		usleep(500);
 	}
 }

@@ -59,6 +59,7 @@ void	init_philo_and_forks(t_data *data)
 		philos[i].left_fork = &forks[i];
 		philos[i].right_fork = &forks[(i + 1) % data->num_philos];
 		philos[i].data = data;
+		pthread_mutex_init(&philos[i].fork_flag_lock, NULL);
 		i++;
 	}
 	init_mutexes(philos, data, forks);

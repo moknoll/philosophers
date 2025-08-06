@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mknoll <mknoll@student.42.fr>              +#+  +:+       +#+        */
+/*   By: moritz <moritz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 14:02:32 by mknoll            #+#    #+#             */
-/*   Updated: 2025/06/05 14:05:30 by mknoll           ###   ########.fr       */
+/*   Updated: 2025/08/05 09:46:36 by moritz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,33 @@ int	check_death(t_philo *philo)
 		return (1);
 	}
 	pthread_mutex_unlock(&philo->data->death_lock);
+	return (0);
+}
+
+int	check_all_meals_complete(t_data *data)
+{
+	int	i;
+	int	philosophers_done;
+
+	if (data->must_eat == 0)
+		return (0);
+	philosophers_done = 0;
+	i = 0;
+	while (i < data->num_philos)
+	{
+		pthread_mutex_lock(&data->meal_lock);
+		if (data->philos[i].meals >= data->must_eat)
+			philosophers_done++;
+		pthread_mutex_unlock(&data->meal_lock);
+		i++;
+	}
+	if (philosophers_done == data->num_philos)
+	{
+		pthread_mutex_lock(&data->death_lock);
+		data->death = 1;
+		pthread_mutex_unlock(&data->death_lock);
+		return (1);
+	}
 	return (0);
 }
 

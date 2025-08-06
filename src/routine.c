@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mknoll <mknoll@student.42.fr>              +#+  +:+       +#+        */
+/*   By: moritz <moritz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 14:01:04 by mknoll            #+#    #+#             */
-/*   Updated: 2025/06/24 14:05:28 by mknoll           ###   ########.fr       */
+/*   Updated: 2025/08/04 08:44:22 by moritz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,5 +76,6 @@ void	*philo_routine(void *arg)
 		put_down_forks(philo);
 		sleep_philo(philo);
 	}
+	put_down_forks(philo);
 	return (NULL);
 }

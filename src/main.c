@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mknoll <mknoll@student.42.fr>              +#+  +:+       +#+        */
+/*   By: moritz <moritz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 13:57:30 by mknoll            #+#    #+#             */
-/*   Updated: 2025/06/24 14:38:00 by mknoll           ###   ########.fr       */
+/*   Updated: 2025/08/04 08:33:57 by moritz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	clean_up(t_data *data)
 	while (i < data->num_philos)
 	{
 		pthread_mutex_destroy(&data->forks[i]);
+		pthread_mutex_destroy(&data->philos[i].fork_flag_lock);
 		i++;
 	}
 	pthread_mutex_destroy(&data->print);
@@ -44,6 +45,11 @@ t_data	*get_data(char *argv[])
 	data->time_to_die = ft_atoi(argv[2]);
 	data->time_to_eat = ft_atoi(argv[3]);
 	data->time_to_sleep = ft_atoi(argv[4]);
+	// Check if must_eat parameter was provided
+	if (argv[5])
+		data->must_eat = ft_atoi(argv[5]);
+	else
+		data->must_eat = 0; // 0 means infinite eating
 	data->death = 0;
 	return (data);
 }
